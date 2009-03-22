@@ -1,0 +1,8 @@
+
+from datetime import datetime
+
+import os,sys
+
+globals().update(os.environ)
+date = datetime.now()
+

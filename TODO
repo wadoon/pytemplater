@@ -1,0 +1,13 @@
+                 88P'888'Y88   e88 88e   888 88e     e88 88e   
+                 P'  888  'Y  d888 888b  888 888b   d888 888b  
+                     888     C8888 8888D 888 8888D C8888 8888D 
+                     888      Y888 888P  888 888P   Y888 888P  
+                     888       "88 88"   888 88"     "88 88"   
+
+	Author: Alexander Weigl
+	Date:   2008-12-31
+
+No	Prio	Description
+#1 	   5	add multiline read 
+-2 	  10 	refactoring: all read methods to one module
+                

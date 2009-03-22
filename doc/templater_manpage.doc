@@ -1,0 +1,39 @@
+TEMPLATER(3)
+============
+
+NAME
+----
+
+templater - generates files from templates interactively
+
+
+SYNOPSIS
+--------
+
+templater -t <template-name> [-o output-file]
+
+DESCRIPTION
+-----------
+	-t <template-name>, --template=<template-name>	
+	   specifies the template which be used
+
+	-o <output-file>, --output=<output-file>
+	   specifies the file where the result should written to.
+	   If no file is given stdout is used
+
+AUTHOR
+------
+	Alexander Weigl <alexweigl@gmail.com>
+
+VERSION
+-------
+	Version 1.1.2
+
+COPYRIGHT
+---------
+	License by creative commons na-by-sa
+
+
+:man source: Templater
+:man version: 1.1.2
+:man manual: Templater Manual

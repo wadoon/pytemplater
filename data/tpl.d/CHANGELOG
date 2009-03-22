@@ -1,0 +1,14 @@
+CCCCC  HH   HH   AAA   NN   NN   GGGG  EEEEEEE LL       OOOOO    GGGG  
+CC    C HH   HH  AAAAA  NNN  NN  GG  GG EE      LL      OO   OO  GG  GG 
+CC      HHHHHHH AA   AA NN N NN GG      EEEEE   LL      OO   OO GG      
+CC    C HH   HH AAAAAAA NN  NNN GG   GG EE      LL      OO   OO GG   GG 
+ CCCCC  HH   HH AA   AA NN   NN  GGGGGG EEEEEEE LLLLLLL  OOOO0   GGGGGG 
+                                                                        
+<%
+  	author = read('Author')
+%>
+
+% if author:
+	Author: ${author}
+% endif
+	Date: ${now}
