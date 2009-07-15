@@ -1,10 +1,34 @@
-import urwid.curses_display
-import urwid
+"""
+This module provides an simple interface for entering values from the command line.
+It is coded in boundle with templater for using it within the templates.
 
-__all__=['cread', 'Line', 'TextInput', 'LongTextInput', 'IntInput', 'BoolInput', 'read', 'PyInput']
+Basic usage:
+
+>>> lastname, firstname = read(TextInput('Lastname:','Firstname:')
+Lastname: Bar
+Firstname: Foo
+>>> print(firstname, lastname)
+Foo Bar
+
+You can choose between ``read`` and ``cread`` for asking values.
+``read`` uses a simple command line with ``print`` and ``input()``.
+``cread`` will be show an curses interface
+"""
+
+__all__=['cread', 'Line', 'TextInput', 'LongTextInput',
+         'IntInput', 'BoolInput', 'read', 'PyInput']
 __version__='1.1'
 
+
+import abc
+
 def read(*args):
+    """ Asking the user after the given values on the command line interface.
+    
+    ``*args`` is an list of Line, TextInput, LongTextInput, IntInput, BoolInput, PyInput
+
+    @return an tuple with the values asking for 
+    """
     output = []
     for input in args:
         # ignore only output lines
@@ -15,14 +39,20 @@ def read(*args):
 
 
 def cread(*args):
-    """
-    display a curses window. the user can enter values for each Input arg.
+    """Display a curses window. the user can enter values for each input arg.
+    ``*args`` is an list of Line,TextInput,LongTextInput, IntInput, BoolInput,PyInput
     @return a tuple with value in the given order from the args
     """
+    
+    import urwid.curses_display
+    import urwid
+
     ui = CursesUI(*args)
     ui.main()
     return [x.value for x in ui.inputs if type(x) is not Line]
 
+#############################################################################
+## Urwid Helper functions
 def attr_input(widget):
     return urwid.AttrWrap(widget,"input")
 
@@ -33,26 +63,45 @@ def line(text, in_widget):
     pmpt = attr_prompt(text)
     widget = attr_input(in_widget)
     return urwid.Columns((pmpt,widget))
+
 ###########################################################
-class Line(object):
+##
+
+class Input(object):
+    __metaclass__=abc.ABCMeta
+    def __init__(self,prompt, default=None):
+        Line.__init__(self, prompt)
+        self.value = default
+        
+    @abc.abstractmethod
+    def read(self): pass 
+
+###############################################################################
+    
+class Line(Input):
+    """Represent an simple comment line in the interface. For printing additional
+    informations or instructions."""
     def __init__(self, prompt):
+        """
+        ``prompt`` information to be printed
+        """
         self.prompt = prompt
 
     def toUi(self):  return attr_prompt(self.prompt)
     def retrValue(self):pass
     def read(self):
-        print self.prompt
+        print self.prompt        
+
         
 ###############################################################################
-class Input(Line):
-    def __init__(self,prompt, default=None):
-        Line.__init__(self, prompt)
-        self.value = default
-###############################################################################
 class IntInput(Input):
+    """ Asking for an Integer input)
+    ``prompt`` - Label to be shown
+    ``default`` - default value (defaults to 0)
+    """
     def __init__(self,prompt, default = 0):
         Input.__init__(self,prompt,default)
-
+        
     def toUi(self):
         self.widget =  urwid.IntEdit(
             default = int(self.value) )
@@ -67,6 +116,10 @@ class IntInput(Input):
 
 ###############################################################################
 class TextInput(Input):
+    """ The standard one single line string input
+    ``prompt`` - Label to be shown
+    ``default`` - default value (defaults to "")
+    """
     def __init__(self,prompt, default=""):
         Input.__init__(self,prompt,default)
 
@@ -84,6 +137,10 @@ class TextInput(Input):
         
 ###############################################################################
 class LongTextInput(Input):
+    """Asking for an multiline input, this will have to close with CTRL-D
+    ``prompt`` - Label to be shown
+    ``default`` - default value (defaults to "")
+    """
     def __init__(self,prompt, default=""):
         Input.__init__(self,prompt,default)
 
@@ -108,6 +165,13 @@ class LongTextInput(Input):
             
 ###############################################################################
 class BoolInput(Input):
+    """Asking for a true/false input
+    User can insert every value. It will try to convert.
+    If the conversion fails, the default value will be return.
+    
+    ``prompt`` - Label to be shown
+    ``default`` - default value (defaults to False)
+    """
     def __init__(self,prompt, default=False):
         Input.__init__(self, prompt, default)
     
@@ -124,11 +188,23 @@ class BoolInput(Input):
     def retrValue(self): pass
 
     def read(self):
-        print self.prompt, 
-        return bool(raw_input())
+        print self.prompt,
+        try:
+            i = input()
+            return bool(i)
+        except:
+            print "could not transform '%s' to an bool value" % i
+            return self.default
 
 ###############################################################################
+        
 class PyInput(TextInput):
+    """Asking for an one line input.
+    The input will be parsed by python and an appropriate python object will be returnd.
+    
+    ``prompt`` - Label to be shown
+    ``default`` - default value (defaults to None)
+    """
     def __init__(self,prompt, default=None):
         TextInput.__init__(self, prompt, default)
     
@@ -141,7 +217,6 @@ class PyInput(TextInput):
         return eval( raw_input() )                      
 
 ###############################################################################
-
 
 class CursesUI(object):
 	def __init__(self, *inputs):

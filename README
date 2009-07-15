@@ -1,0 +1,40 @@
+pytemplater > v0.1
+=====================================================================
+
+Author: Alexander Weigl <alexweigl@gmail.com>
+	    http://areku.kilu.de
+
+Licensed under: cc-by-nc-sa
+http://creativecommons.org/licenses/by-nc-sa/3.0/de/
+
+Home of software is: http://github.com/areku/pytemplater/
+
+About
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The templater bundle is an python software. It provides a command line 
+program for creating files from templates. While creating the file 
+the user is asked for input, specified in the template.
+
+templater is built on top of 
+mako (www.makotemplates.org) and urwid (http://excess.org/urwid)
+[only needed for curses interfaces input]
+
+Install¶
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+You can install templater with:
+
+   $ sudo python setup.py install
+
+A script with name templater and an Python module tplinput will be installed. 
+Additional a little start up with some template will be place under /usr/share/templater/.
+
+Documentation 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+See doc/ for documentation. if sphinx is install use 
+
+  $ make html 
+ 
+to build a nicer look ;).
+
+

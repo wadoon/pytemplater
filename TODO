@@ -8,6 +8,6 @@
 	Date:   2008-12-31
 
 No	Prio	Description
-#1 	   5	add multiline read 
+-1 	   5	add multiline read 
 -2 	  10 	refactoring: all read methods to one module
-                
+ 3    --    find an easy for finding out if a variable is set in (c)read with an optional asking if not set               
